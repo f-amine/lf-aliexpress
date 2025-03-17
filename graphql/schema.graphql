@@ -1,0 +1,59 @@
+schema {
+  query: RootQueryType
+  mutation: RootMutationType
+}
+
+type RootQueryType {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+  connectionStatus: ConnectionStatus
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type ConnectionStatus {
+  aliexpress: AliexpressConnectionStatus
+}
+
+type AliexpressConnectionStatus {
+  connected: Boolean!
+  currency: String
+  language: String
+}
+
+type RootMutationType {
+  getAliexpressAuthUrl: AliexpressAuthUrlResponse
+  exchangeAliexpressToken(code: String!): AliexpressTokenResponse
+  updateAliexpressSettings(currency: String, language: String): UpdateAliexpressSettingsResponse
+  disconnectAliexpress: DisconnectAliexpressResponse
+}
+
+type AliexpressAuthUrlResponse {
+  authorizationUrl: String
+}
+
+type AliexpressTokenResponse {
+  success: Boolean
+  error: String
+}
+
+type UpdateAliexpressSettingsResponse {
+  success: Boolean
+}
+
+type DisconnectAliexpressResponse {
+  success: Boolean
+}

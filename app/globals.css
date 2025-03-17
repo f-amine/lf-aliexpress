@@ -3,6 +3,43 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  --color-blue-100: rgba(0, 133, 255, 1);
+  --color-blue-200: #0075ff;
+  --color-blue-300: #0061f4;
+  --color-blue-400: #2F80ED;
+  
+  --color-gray-100: #F6F7FB;
+  --color-gray-200: #EEEFF3;
+  --color-gray-300: #4F4F4F;
+  --color-gray-400: #E0E0E0;
+  --color-gray-500: #596B81;
+  --color-gray-900: #191E24;
+  
+  --color-neutral-100: #e6eaef;
+  --color-neutral-200: #d9dfe8;
+  --color-neutral-300: #d3dae4;
+  --color-neutral-400: #c3cbd5;
+  --color-neutral-500: #abb6c4;
+  --color-neutral-600: #93a2b4;
+  --color-neutral-700: #7b8da3;
+  --color-neutral-800: #647990;
+  --color-neutral-900: #5a6c81;
+  
+  --color-teal-100: #57D196;
+  --color-teal-200: #51CB90;
+  --color-teal-300: #57C38F;
+  --color-teal-400: #4FBB87;
+  
+  --color-orange-500: #FF7A00;
+  
+  --color-red-100: #FF7B7B;
+  --color-red-200: #FF6B6B;
+  --color-red-300: #F56171;
+  --color-red-400: #FF5B5B;
+  --color-red-500: #FF4949;
+  --color-red-600: #F03A3A;
+  --color-red-700: #E63030;
 }
 
 @theme inline {
@@ -10,17 +47,52 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  --color-white: #fff;
+  --color-transparent: transparent;
+  
+  --color-blue-100: var(--color-blue-100);
+  --color-blue-200: var(--color-blue-200);
+  --color-blue-300: var(--color-blue-300);
+  --color-blue-400: var(--color-blue-400);
+  
+  --color-gray-100: var(--color-gray-100);
+  --color-gray-200: var(--color-gray-200);
+  --color-gray-300: var(--color-gray-300);
+  --color-gray-400: var(--color-gray-400);
+  --color-gray-500: var(--color-gray-500);
+  --color-gray-900: var(--color-gray-900);
+  
+  --color-neutral-100: var(--color-neutral-100);
+  --color-neutral-200: var(--color-neutral-200);
+  --color-neutral-300: var(--color-neutral-300);
+  --color-neutral-400: var(--color-neutral-400);
+  --color-neutral-500: var(--color-neutral-500);
+  --color-neutral-600: var(--color-neutral-600);
+  --color-neutral-700: var(--color-neutral-700);
+  --color-neutral-800: var(--color-neutral-800);
+  --color-neutral-900: var(--color-neutral-900);
+  
+  --color-teal-100: var(--color-teal-100);
+  --color-teal-200: var(--color-teal-200);
+  --color-teal-300: var(--color-teal-300);
+  --color-teal-400: var(--color-teal-400);
+  
+  --color-orange-500: var(--color-orange-500);
+  
+  --color-red-100: var(--color-red-100);
+  --color-red-200: var(--color-red-200);
+  --color-red-300: var(--color-red-300);
+  --color-red-400: var(--color-red-400);
+  --color-red-500: var(--color-red-500);
+  --color-red-600: var(--color-red-600);
+ --color-red-700: var(--color-red-700);
+
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
-  background: var(--background);
+  background: linear-gradient(232deg, #F7FAFC 0%, #FFF 78.02%), #FFF;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }

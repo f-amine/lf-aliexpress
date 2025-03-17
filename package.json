@@ -3,22 +3,51 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "schema": "tsx scripts/schema.ts",
+    "relay": "relay-compiler",
+    "db": "knex migrate:latest",
+    "db:make": "knex migrate:make",
+    "db:down": "knex migrate:down",
+    "db:rollback": "knex migrate:rollback",
     "lint": "next lint"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "crypto": "^1.0.1",
+    "dataloader": "^2.2.3",
+    "dotenv": "^16.4.7",
+    "graphql": "^16.10.0",
+    "graphql-relay": "^0.10.2",
+    "immutable": "^5.0.3",
+    "knex": "^3.1.0",
+    "lodash": "^4.17.21",
+    "mysql2": "^3.13.0",
+    "next": "15.2.2",
+    "next-auth": "^4.24.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.2.2"
+    "react-relay": "^18.2.0",
+    "relay-runtime": "^18.2.0",
+    "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tailwindcss/postcss": "^4",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "@types/react-relay": "^18.2.0",
+    "@types/relay-runtime": "^18.2.5",
+    "babel-plugin-relay": "^18.2.0",
+    "relay-compiler": "^18.2.0",
+    "sass": "^1.85.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.19.3",
+    "typescript": "^5"
   }
 }
