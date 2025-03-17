@@ -18,11 +18,11 @@ export type SelectComponentProps = {
 	// mybe w will need to remove this readonly
 	options: readonly {
 		label: string | React.ReactNode
-		value: string | boolean | number | undefined | null,
+		value: string,
 		disabled?: boolean
 	}[]
 	error?: string
-	onChange: (v) => void
+	onChange: (v:string) => void
 	value: SelectComponentProps["options"][number]["value"] | null
 	cancellable?: boolean
 	label?: React.ReactNode
@@ -84,7 +84,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 										props.disabled ? undefined :
 										function (event) {
 											event.stopPropagation();
-											props.onChange(null);
+											props.onChange('');
 										}
 									}
 								/>
@@ -230,7 +230,6 @@ export function AsyncSelect({className, error, ...props}: AsyncSelectProps){
 
 	const isSingle = defPVariables.first === 1;
 	const inputRef = React.useRef<HTMLInputElement>(null);
-
 	function onChange(value: AsyncSelectProps["value"]){
 		// apply limit
 		if(props.disabled){

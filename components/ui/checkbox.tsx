@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils"
 import { Label } from "./label"
 import { Check } from "./icons"
  
-type Props = React.HTMLAttributes<HTMLInputElement> & {
+type Props = Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> & {
   checked: boolean
   label: React.ReactNode
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void

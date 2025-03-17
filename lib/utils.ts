@@ -22,15 +22,17 @@ export function mapValueToKey(v:any): string {
 	}
 }
 
+type Action<T> = 
+  | { type: 'setIn'; name: string[] | string; value: any }
+  | { type: 'reset' }
+  | { type: 'func'; func: (state: T) => T };
 
 export function useLocalStore<Type>(
-	initialData: Type | (() => Type),
-	watch: any[] = [],
-	reducer?: (a: Type, b: Type) => Type
-): [Type, (a, b?) => void] {
+  initialData: Type | (() => Type),
+  watch: any[] = [],
+  reducer?: (a: Type, b: Type) => Type
+): [Type, (a: ((state: Type) => Type) | string[] | string | React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, b?: any) => void] {
 
-	// this component was updated recently
-	// it may break tings, if you notice anything; let's discuss it
 
 	const [state, dispatch] = React.useReducer(
 		function (state, ac) {
@@ -95,28 +97,24 @@ export function useLocalStore<Type>(
 	return [state, onChange]
 }
 
-function mapEventToKeyValue(event, _value) {
-
-	if (Array.isArray(event) || (typeof event === 'string')) {
-		return [lodash.castArray(event), _value];
-	}
-
-	let rt = [event.target.name.split(',')];
-
-	if (event.target.type === "checkbox") {
-		rt.push(event.target.checked);
-	} else if (event.target.type === "number") {
-		let value = parseFloat(event.target.value);
-		rt.push(
-			isNaN(value) ? null : value
-			// isNaN(event.target.value) ? null : parseFloat(event.target.value)
-			// (event.target.value === "" || isNaN(event.target.value)) ? 0 : parseFloat(event.target.value)
-		);
-	} else {
-		rt.push(event.target.value);
-	}
-
-	return rt;
+function mapEventToKeyValue(
+  event: string[] | string | React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, 
+  _value?: any
+): [string[] | string, any] {
+  if (Array.isArray(event) || (typeof event === 'string')) {
+    return [lodash.castArray(event), _value];
+  }
+  
+  let rt: any[] = [event.target.name.split(',')];
+  
+  if (event.target.type === "checkbox") {
+    rt.push((event.target as HTMLInputElement).checked);
+  } else if (event.target.type === "number") {
+    let value = parseFloat(event.target.value);
+    rt.push(isNaN(value) ? null : value);
+  } else {
+    rt.push(event.target.value);
+  }
+  
+  return rt as [string[] | string, any];
 }
-
-
