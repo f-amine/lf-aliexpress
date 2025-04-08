@@ -31,6 +31,7 @@ export function ls({ token, data }: Opts): Promise<any> {
     })
     .then((response) => {
       if (response.errors) {
+        console.log(response.errors)
         const er = new LfError(response.errors);
         return Promise.reject(er);
       }
@@ -75,4 +76,26 @@ export class LfError extends Error {
     this.errors = errors;
   }
   errors: { key: string }[];
+}
+
+
+export async function img({ url, token }: { url: string; token: string }) {
+  return await ls({
+    token: token,
+    data: {
+      query: `
+      mutation importByUrlMutation(
+        $url: String!
+      ) {
+        importImage(url: $url) {
+          id
+        }
+      }`,
+      variables: {
+        url: url,
+      },
+    },
+  }).then((res) => {
+    return res.data?.importImage.id;
+  });
 }

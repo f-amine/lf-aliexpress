@@ -98,7 +98,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, DropdownMenuProps>(
         {...props}
         ref={ref}
         className={clsx(
-          'absolute flex flex-col bg-[#fff] shadow-[0px_3px_10px_rgba(0,0,0,0.08)] border border-[#D3DAE4] rounded-[8px] max-h-[min(50vh,220px)] overflow-y-hidden',
+          'absolute flex flex-col bg-[#fff] shadow-[0px_3px_10px_rgba(0,0,0,0.08)] border border-[#D3DAE4] rounded-[8px] max-h-[min(50vh,220px)] overflow-y-hidden z-10',
           props.className
         )}
       >

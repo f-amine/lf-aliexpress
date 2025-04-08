@@ -1,13 +1,31 @@
 import crypto from 'crypto';
 
-const API_BASE_URL = 'https://api-sg.aliexpress.com/rest';
-const APP_KEY = process.env.ALIEXPRESS_APP_KEY;
-const APP_SECRET = process.env.ALIEXPRESS_SECRET || '';
-
 interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   error?: string;
+}
+
+export function generateSignature(apiPath: string, params: Record<string, any>, appSecret: string): string {
+  const paramsForSign = { ...params };
+  delete paramsForSign.sign;
+  
+  const sortedKeys = Object.keys(paramsForSign).sort();
+  
+  let concatenatedString = "";
+  for (const key of sortedKeys) {
+    if (typeof paramsForSign[key] !== 'undefined' && paramsForSign[key] !== null) {
+      concatenatedString += `${key}${paramsForSign[key]}`;
+    }
+  }
+  
+  const stringToSign = apiPath + concatenatedString;
+  
+  return crypto
+    .createHmac('sha256', appSecret)
+    .update(stringToSign)
+    .digest('hex')
+    .toUpperCase();
 }
 
 export async function aliExpressApiRequest<T = any>(
@@ -16,91 +34,124 @@ export async function aliExpressApiRequest<T = any>(
   method: 'GET' | 'POST' = 'GET',
   accessToken?: string
 ): Promise<ApiResponse<T>> {
-  try {
-    if (!APP_KEY || !APP_SECRET) {
-      throw new Error('Missing APP_KEY or APP_SECRET in environment variables');
-    }
+  const APP_KEY = process.env.ALIEXPRESS_APP_KEY;
+  const APP_SECRET = process.env.ALIEXPRESS_SECRET || '';
 
-    // Generate timestamp
-    const timestamp = new Date().getTime().toString();
+  if (!APP_KEY || !APP_SECRET) {
+    return {
+      success: false,
+      error: 'Missing APP_KEY or APP_SECRET in environment variables'
+    };
+  }
+  
+  try {
+    const cleanApiPath = apiPath.startsWith('/') ? apiPath.substring(1) : apiPath;
     
-    // Combine all parameters
+    const isSystemInterface = cleanApiPath.startsWith('auth/');
+    
     const allParams: Record<string, any> = {
+      ...params,
       app_key: APP_KEY,
-      timestamp,
-      sign_method: 'sha256',
-      ...params
+      timestamp: new Date().getTime().toString(),
+      sign_method: 'sha256'
     };
     
-    // Add access token if provided (for authenticated endpoints)
+    // session is aliexpress's name for access_token in their API
     if (accessToken) {
-      allParams.access_token = accessToken;
+      allParams.session = accessToken;
     }
     
-    // Generate signature
-    const sign = generateSignature(apiPath, allParams);
+    if (!isSystemInterface) {
+      allParams.method = cleanApiPath;
+    }
     
-    // Add signature to parameters
-    allParams.sign = sign;
-    
-    let url = `${API_BASE_URL}${apiPath}`;
-    
-    let headers: Record<string, string> = {};
-    let body: string | URLSearchParams | undefined;
-    
-    if (method === 'GET') {
-      // For GET requests, append params to URL as query string
-      const queryParams = new URLSearchParams();
-      Object.entries(allParams).forEach(([key, value]) => {
-        queryParams.append(key, String(value));
-      });
-      
-      headers = {
-        'Accept': 'application/json'
-      };
-      
-      url += `?${queryParams.toString()}`;
-    } else {
-      // For POST requests, send params in the body
-      if (accessToken) {
-        headers = {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        };
-        
-        // Remove access_token from body when using Authorization header
-        delete allParams.access_token;
-        
-        body = JSON.stringify(allParams);
-      } else {
-        headers = {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-          'Accept': 'application/json'
-        };
-        
-        const formData = new URLSearchParams();
-        Object.entries(allParams).forEach(([key, value]) => {
-          formData.append(key, String(value));
-        });
-        
-        body = formData;
+    // Convert objects to strings
+    for (const key in allParams) {
+      if (typeof allParams[key] === 'object' && allParams[key] !== null) {
+        allParams[key] = JSON.stringify(allParams[key]);
       }
     }
     
-    const response = await fetch(url, {
-      method,
-      headers,
-      body: body instanceof URLSearchParams ? body.toString() : body
+    const API_BASE_URL = isSystemInterface 
+      ? 'https://api-sg.aliexpress.com/rest' 
+      : 'https://api-sg.aliexpress.com/sync';
+      
+    const signApiPath = isSystemInterface ? `/${cleanApiPath}` : '';
+    const sign = generateSignature(signApiPath, allParams, APP_SECRET);
+    
+    allParams.sign = sign;
+    
+    // Prepare query string or body
+    const queryParams = new URLSearchParams();
+    Object.entries(allParams).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        queryParams.append(key, String(value));
+      }
     });
     
-    const data = await response.json();
+    // Build the URL
+    let url = API_BASE_URL;
+    if (isSystemInterface) {
+      url = `${API_BASE_URL}/${cleanApiPath}`;
+    }
     
-    if (!response.ok || (data.code && data.code !== '0')) {
-      console.error(`AliExpress API error (${apiPath}):`, data);
+    console.log('Request URL:', `${url}?${queryParams.toString()}`);
+    
+    // Execute HTTP request
+    let response;
+    
+    if (method === 'GET') {
+      response = await fetch(`${url}?${queryParams.toString()}`, {
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+    } else {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+          'Accept': 'application/json'
+        },
+        body: queryParams.toString()
+      });
+    }
+    
+    // Handle the response safely
+    const responseText = await response.text();
+    let data: any;
+    
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('Response parsing error:', parseError);
+      console.error('Response text:', responseText);
+      
       return {
         success: false,
-        error: data.message || 'API request failed',
+        error: `Failed to parse response: ${responseText.substring(0, 100)}${responseText.length > 100 ? '...' : ''}`,
+        data: responseText
+      };
+    }
+    
+    // Check for API-specific error responses
+    if (data.error_response) {
+      console.error(`AliExpress API error (${apiPath}):`, data.error_response);
+      return {
+        success: false,
+        error: data.error_response.msg || 'API request failed',
+        data
+      };
+    }
+    
+    // For nested business API responses
+    const businessResponseKey = cleanApiPath.replace(/\./g, '_');
+    const businessResponse = data[businessResponseKey];
+    if (businessResponse && businessResponse.code !== '0' && businessResponse.code !== 0) {
+      console.error(`AliExpress API error (${apiPath}):`, businessResponse);
+      return {
+        success: false,
+        error: businessResponse.msg || 'API request failed',
         data
       };
     }
@@ -118,25 +169,6 @@ export async function aliExpressApiRequest<T = any>(
   }
 }
 
-
-function generateSignature(apiPath: string, params: Record<string, any>): string {
-  const sortedKeys = Object.keys(params).sort();
-  
-  let concatenatedString = "";
-  for (const key of sortedKeys) {
-    concatenatedString += `${key}${params[key]}`;
-  }
-  
-  const stringToSign = apiPath + concatenatedString;
-  
-  return crypto
-    .createHmac('sha256', APP_SECRET)
-    .update(stringToSign)
-    .digest('hex')
-    .toUpperCase();
-}
-
-
 export async function createToken(code: string): Promise<ApiResponse> {
   return aliExpressApiRequest(
     '/auth/token/create',
@@ -145,7 +177,6 @@ export async function createToken(code: string): Promise<ApiResponse> {
   );
 }
 
-
 export async function refreshToken(refreshToken: string): Promise<ApiResponse> {
   return aliExpressApiRequest(
     '/auth/token/refresh',
@@ -153,3 +184,5 @@ export async function refreshToken(refreshToken: string): Promise<ApiResponse> {
     'POST'
   );
 }
+
+

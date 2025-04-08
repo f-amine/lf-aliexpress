@@ -16,6 +16,10 @@ type RootQueryType {
     ids: [ID!]!
   ): [Node]!
   connectionStatus: ConnectionStatus
+  searchAliexpressProducts(keyWord: String, pageSize: Int, pageIndex: Int, categoryId: Int, sortBy: String, searchExtend: String, selectionName: String, countryCode: String): AliexpressProductSearchResult
+  getProducts(keyWord: String, pageSize: Int, pageIndex: Int, status: String, sortBy: String): ProductsResult
+  getProduct(id: String!): Product
+  aliexpressProductDetails(productId: String!, shipToCountry: String, targetLanguage: String): AliExpressProductDetail
 }
 
 """An object with an ID"""
@@ -34,11 +38,181 @@ type AliexpressConnectionStatus {
   language: String
 }
 
+type AliexpressProductSearchResult {
+  products: [AliexpressProduct]
+  totalCount: Int
+  pageIndex: Int
+  pageSize: Int
+}
+
+type AliexpressProduct {
+  itemId: String
+  title: String
+  itemMainPic: String
+  itemUrl: String
+  salePrice: String
+  salePriceCurrency: String
+  originalPrice: String
+  originalPriceCurrency: String
+  discount: String
+  orders: String
+  score: String
+  evaluateRate: String
+  targetSalePrice: String
+  targetOriginalPrice: String
+  targetOriginalPriceCurrency: String
+  type: String
+}
+
+type ProductsResult {
+  products: [Product]!
+  totalCount: Int!
+  pageIndex: Int!
+  pageSize: Int!
+}
+
+type Product implements Node {
+  id: ID!
+  title: String!
+  description: String
+  price: Float!
+  salePrice: Float
+  imageUrl: String
+  aliexpressItemId: String
+  aliexpressUrl: String
+  supplier: String
+  shipping: String
+  orders: String
+  rating: Float
+  status: String
+  createdAt: String
+  updatedAt: String
+}
+
+type AliExpressProductDetail {
+  result: AliExpressProductResult
+  rsp_code: Int
+  rsp_msg: String
+  request_id: String
+}
+
+type AliExpressProductResult {
+  ae_item_sku_info_dtos: AliExpressSkuInfoContainer
+  ae_multimedia_info_dto: AliExpressMultimediaInfo
+  ae_item_base_info_dto: AliExpressItemBaseInfo
+  ae_item_properties: AliExpressItemPropertyContainer
+  package_info_dto: AliExpressPackageInfo
+  logistics_info_dto: AliExpressLogisticsInfo
+  ae_store_info: AliExpressStoreInfo
+  has_whole_sale: Boolean
+}
+
+type AliExpressSkuInfoContainer {
+  ae_item_sku_info_d_t_o: [AliExpressSkuInfo]
+}
+
+type AliExpressSkuInfo {
+  sku_attr: String
+  sku_id: String
+  offer_sale_price: String
+  sku_price: String
+  sku_available_stock: String
+  currency_code: String
+  ipm_sku_stock: Int
+  sku_stock: Boolean
+  price_include_tax: Boolean
+  offer_bulk_sale_price: String
+  id: String
+  sku_code: String
+  ae_sku_property_dtos: AliExpressSkuPropertyContainer
+}
+
+type AliExpressSkuPropertyContainer {
+  ae_sku_property_d_t_o: [AliExpressSkuProperty]
+}
+
+type AliExpressSkuProperty {
+  sku_property_name: String
+  sku_property_value: String
+  property_value_definition_name: String
+  sku_image: String
+  property_value_id: Int
+  sku_property_id: Int
+}
+
+type AliExpressMultimediaInfo {
+  image_urls: String
+  ae_video_dtos: AliExpressVideoContainer
+}
+
+type AliExpressVideoContainer {
+  ae_video_d_t_o: [AliExpressVideoInfo]
+}
+
+type AliExpressVideoInfo {
+  media_url: String
+  poster_url: String
+  media_status: String
+  media_type: String
+  media_id: String
+  ali_member_id: String
+}
+
+type AliExpressItemBaseInfo {
+  subject: String
+  detail: String
+  mobile_detail: String
+  category_id: Int
+  product_id: Float
+  currency_code: String
+  sales_count: String
+  avg_evaluation_rating: String
+  evaluation_count: String
+  product_status_type: String
+}
+
+type AliExpressItemPropertyContainer {
+  ae_item_property: [AliExpressItemProperty]
+}
+
+type AliExpressItemProperty {
+  attr_name_id: Int
+  attr_value_id: Float
+  attr_name: String
+  attr_value: String
+}
+
+type AliExpressPackageInfo {
+  package_width: Int
+  package_height: Int
+  package_length: Int
+  gross_weight: String
+  package_type: Boolean
+  product_unit: Int
+}
+
+type AliExpressLogisticsInfo {
+  delivery_time: Int
+  ship_to_country: String
+}
+
+type AliExpressStoreInfo {
+  store_id: Int
+  shipping_speed_rating: String
+  communication_rating: String
+  store_name: String
+  store_country_code: String
+  item_as_described_rating: String
+}
+
 type RootMutationType {
   getAliexpressAuthUrl: AliexpressAuthUrlResponse
   exchangeAliexpressToken(code: String!): AliexpressTokenResponse
   updateAliexpressSettings(currency: String, language: String): UpdateAliexpressSettingsResponse
   disconnectAliexpress: DisconnectAliexpressResponse
+  favoriteProduct(aliexpressItemId: String!, productData: String!): FavoriteProductResponse
+  unfavoriteProduct(aliexpressItemId: String!): FavoriteProductResponse
+  importProductToLightfunnels(productData: ProductDataInput, options: ProductImportOptionsInput): ProductImportResponse
 }
 
 type AliexpressAuthUrlResponse {
@@ -56,4 +230,44 @@ type UpdateAliexpressSettingsResponse {
 
 type DisconnectAliexpressResponse {
   success: Boolean
+}
+
+type FavoriteProductResponse {
+  success: Boolean!
+  product: Product
+  error: String
+}
+
+type ProductImportResponse {
+  success: Boolean!
+  productId: String
+  error: String
+}
+
+input ProductDataInput {
+  title: String!
+  description: String!
+  price: Float!
+  variants: [ProductVariantInput]
+  images: [String]
+  options: [ProductOptionInput]
+}
+
+input ProductVariantInput {
+  id: String!
+  title: String!
+  price: Float!
+  sku: String
+  inventory_quantity: Int
+  options: [String]
+}
+
+input ProductOptionInput {
+  name: String!
+  values: [String]
+}
+
+input ProductImportOptionsInput {
+  trackInventory: Boolean
+  marginPercentage: Float
 }

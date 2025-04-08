@@ -92,6 +92,19 @@ const SetupWizard = () => {
     }
   };
 
+  const isNextDisabled = () => {
+    switch (currentStep) {
+      case 1:
+        return !settings.connected;
+      case 2:
+        return !settings.currency;
+      case 3:
+        return !settings.language;
+      default:
+        return false;
+    }
+  };
+
   return (
     <div className="flex items-start rounded-3xl bg-white shadow-[0px_1px_4px_0px_rgba(9,39,83,0.12)]">
       <div className='flex w-[260px] py-8 px-5 flex-col items-start gap-8 self-stretch shadow-[1px_0px_0px_0px_#E6EAEF]'>
@@ -172,7 +185,7 @@ const SetupWizard = () => {
           </Button>
           <Button 
             onClick={handleNext}
-            disabled={currentStep === 3 && !settings.language}
+            disabled={isNextDisabled()}
           >
             {currentStep === 3 ? 'Finish' : 'Next'}
           </Button>

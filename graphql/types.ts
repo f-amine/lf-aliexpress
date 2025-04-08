@@ -9,10 +9,13 @@ export interface ApiContext {
 
 const { nodeInterface, nodeField, nodesField } = nodeDefinitions(
   async function (id, context: ApiContext) {
-    const [type] = id.split("_");
+    const [type, idValue] = id.split("_");
     switch (type) {
       case "user": {
-        return context.loaders.userLoader.load(id);
+        return context.loaders.userLoader.load(idValue);
+      }
+      case "product": {
+        return context.loaders.productLoader.load(idValue);
       }
       default: {
         throw new Error('invalid type:' + type);
@@ -25,6 +28,9 @@ const { nodeInterface, nodeField, nodesField } = nodeDefinitions(
     switch(type) {
       case "user": {
         return "User";
+      }
+      case "product": {
+        return "Product";
       }
       default: {
         throw new Error('missing type:' + type);

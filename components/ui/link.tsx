@@ -10,8 +10,8 @@ type Props = LinkHTMLAttributes<HTMLAnchorElement> & {
 }
 
 export function NativeLink(props: Props){
-	return <Link {...props} className={cn("underline cursor-pointer text-blue-200", props.className)} />
+	return <Link {...props} className={cn("underline cursor-pointer text-blue-300 font-medium text-sm leading-5", props.className)} />
 }
 export function LinkText(props: LinkHTMLAttributes<HTMLElement>){
-	return <span {...props} className={cn("underline cursor-pointer text-blue-200", props.className)} />
+	return <span {...props} className={cn("underline cursor-pointer text-blue-300 text-sm leading-5", props.className)} />
 }

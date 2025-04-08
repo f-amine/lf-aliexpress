@@ -2,7 +2,7 @@ import React from "react";
 import { cx as clsx, cva, type VariantProps } from "class-variance-authority";
 
 const frameVariants = cva(
-  "flex items-start self-stretch gap-5 rounded-xl", 
+  "flex items-start self-stretch gap-4 border-solid", 
   {
     variants: {
       direction: {
@@ -15,8 +15,9 @@ const frameVariants = cva(
         large: "p-5",
       },
       variant: {
-        default: "border-2 border-solid border-blue-200/20 bg-[#f7fafc]",
-        white: "border-2 border-solid border-neutral-100 bg-white",
+        default: "border-2 border-blue-200/20 bg-[#f7fafc] rounded-xl",
+        white: "border-2 border-neutral-100 bg-white rounded-xl",
+        thin: "border border-neutral-100 bg-[#F3F7FB] rounded-lg"
       }
     },
     defaultVariants: {

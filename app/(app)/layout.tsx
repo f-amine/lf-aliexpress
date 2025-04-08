@@ -9,7 +9,7 @@ export default function AppLayout({
 }) {
   
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container max-w-[1120px] mx-auto py-8 px-4">
       <Title subTitle='Import products, automate order fulfillment, and manage bulk
         orders within your Lightfunnels store.'
       >AliExpress</Title>

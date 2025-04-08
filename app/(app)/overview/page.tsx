@@ -1,25 +1,14 @@
 'use client';
 
 import { Fragment, useState } from 'react';
-import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Frame } from '@/components/ui/frame';
-import { Select } from '@/components/ui/select';
 import { Title } from '@/components/ui/title';
 import { StatsCard } from '@/components/ui/stats-card';
 import { AwaitingPaymentIcon, CanceledIcon, DeliveredIcon, FailedIcon, OrdersIcon, PaymentsIcon, PendingIcon, ProfitIcon, Refresh, ShippedIcon } from '@/components/ui/icons';
 import { Section } from '@/components/ui/section';
 import { TopSellingProducts } from '@/components/pages/overview/top-products';
 
-// Define the time range options
-const timeRangeOptions = [
-  { label: 'Today', value: 'today' },
-  { label: 'Yesterday', value: 'yesterday' },
-  { label: 'Last 7 days', value: 'last_7_days' },
-  { label: 'Last 30 days', value: 'last_30_days' },
-  { label: 'This month', value: 'this_month' },
-  { label: 'Last month', value: 'last_month' },
-]
 
 const mockProducts = [
   {

@@ -3,7 +3,7 @@ import React from "react";
 import LoadingSpinner from "./loading-spinner";
 
 const buttonVariants = cva(
-  "inline-flex justify-center border-solid items-center rounded-lg text-[0.938rem] py-[7px] px-4 font-medium leading-[1.3333em] align-middle cursor-pointer text-center gap-2 border disabled:cursor-not-allowed disabled:opacity-50 focus:shadow-[0_1px_4px_0_rgba(9,39,83,0.12),0_0_0_4px_rgba(var(--button-color-rgb),0.4)] transition-colors",
+  "inline-flex justify-center border-solid items-center rounded-lg text-[0.938rem] py-[7px] px-4 font-medium leading-[1.3333em] align-middle cursor-pointer text-center gap-2 border disabled:cursor-not-allowed disabled:opacity-50 focus:shadow-[0_1px_4px_0_rgba(9,39,83,0.12),0_0_0_4px_rgba(var(--button-color-rgb),0.4)] transition-colors whitespace-nowrap",
   {
     variants: {
       variant: {

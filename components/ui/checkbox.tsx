@@ -1,11 +1,11 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Label } from "./label"
 import { Check } from "./icons"
+import { Label } from "./label"
  
 type Props = Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> & {
   checked: boolean
-  label: React.ReactNode
+  label?: React.ReactNode
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -28,9 +28,11 @@ export function Checkbox(props: Props){
           <Check className="w-3 h-3 text-white" />
         )}
       </div>
-      <span className="pt-[1px]">
-        {props.label}
-      </span>
+      {props.label && (
+        <span className="pt-[1px]">
+          {props.label}
+        </span>
+      )}
     </Label>
   )
 }

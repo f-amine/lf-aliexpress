@@ -1,19 +1,25 @@
 import React from "react";
 
-export function Left (props: React.HTMLAttributes<HTMLOrSVGElement>) {
-	return (
-	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
-	    <path d="M665.66 230.356c14.165 14.163 14.165 37.126 0 51.289L435.307 511.999 665.66 742.356c14.165 14.161 14.165 37.124 0 51.29-14.161 14.161-37.124 14.161-51.29 0l-255.998-256c-14.163-14.165-14.163-37.129 0-51.29L614.37 230.355c14.165-14.163 37.129-14.163 51.29 0z" />
-	  </svg>
-	)
+export function Left(props: React.HTMLAttributes<HTMLOrSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
+      <path 
+        d="M665.66 230.356c14.165 14.163 14.165 37.126 0 51.289L435.307 511.999 665.66 742.356c14.165 14.161 14.165 37.124 0 51.29-14.161 14.161-37.124 14.161-51.29 0l-255.998-256c-14.163-14.165-14.163-37.129 0-51.29L614.37 230.355c14.165-14.163 37.129-14.163 51.29 0z" 
+        fill="currentColor"
+      />
+    </svg>
+  )
 }
 
-export function Right (props: React.HTMLAttributes<HTMLOrSVGElement>) {
-	return (
-	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
-	    <path d="M358.372 230.356c-14.163 14.163-14.163 37.126 0 51.289l230.355 230.354-230.355 230.357c-14.163 14.161-14.163 37.124 0 51.29 14.163 14.161 37.126 14.161 51.289 0l255.999-256c14.165-14.165 14.165-37.129 0-51.29L409.661 230.355c-14.163-14.163-37.126-14.163-51.289 0z" />
-	  </svg>
-	)
+export function Right(props: React.HTMLAttributes<HTMLOrSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
+      <path 
+        d="M358.372 230.356c-14.163 14.163-14.163 37.126 0 51.289l230.355 230.354-230.355 230.357c-14.163 14.161-14.163 37.124 0 51.29 14.163 14.161 37.126 14.161 51.289 0l255.999-256c14.165-14.165 14.165-37.129 0-51.29L409.661 230.355c-14.163-14.163-37.126-14.163-51.289 0z" 
+        fill="currentColor"
+      />
+    </svg>
+  )
 }
 
 export function Close (props: React.HTMLAttributes<HTMLOrSVGElement>){
@@ -233,4 +239,42 @@ export function Refresh(props: React.HTMLAttributes<HTMLOrSVGElement>) {
      <path d="M17.0752 7.49998C16.6525 6.30564 15.9342 5.23782 14.9873 4.39616C14.0403 3.55451 12.8956 2.96645 11.6599 2.68686C10.4242 2.40727 9.13787 2.44527 7.92084 2.79729C6.70381 3.14932 5.59579 3.80391 4.70016 4.69998L0.833496 8.33331M19.1668 11.6666L15.3002 15.3C14.4045 16.1961 13.2965 16.8506 12.0795 17.2027C10.8625 17.5547 9.57609 17.5927 8.3404 17.3131C7.10472 17.0335 5.96 16.4455 5.01305 15.6038C4.06611 14.7621 3.3478 13.6943 2.92516 12.5" stroke="currentColor" strokeWidth="1.34583" strokeLinecap="round" strokeLinejoin="round"/>
    </svg>
  )
+}
+
+export function PushToStore(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <g clipPath="url(#clip0_push_store)">
+        <path d="M0.833252 4.16683L3.33325 0.833496H13.3333L15.8333 4.16683M0.833252 4.16683V15.8335C0.833252 16.2755 1.00885 16.6994 1.32141 17.012C1.63397 17.3246 2.05789 17.5002 2.49992 17.5002H8.74992M0.833252 4.16683H15.8333M15.8333 4.16683V7.91683" stroke="currentColor" strokeWidth="1.42" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M5.83325 7.5L6.0035 8.18098C6.27076 9.25003 7.2313 10 8.33325 10V10C9.4352 10 10.3957 9.25003 10.663 8.18098L10.8333 7.5" stroke="currentColor" strokeWidth="1.42" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12.0833 15H17.9166" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M15 12.0835V17.9168" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_push_store">
+          <rect width="20" height="20" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+export function AddToList(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <g clipPath="url(#clip0_add_list)">
+        <path d="M9.99999 5.83333C9.16665 8.60833 6.24995 8.60833 5.41662 5.83333C4.82298 7.81015 3.1721 8.37875 1.97026 7.53912C0.875119 6.77403 1.19325 5.17333 1.83296 4.00053L2.85948 2.11858C3.15154 1.58314 3.71273 1.25 4.32264 1.25H15.6773C16.2872 1.25 16.8484 1.58314 17.1405 2.11858L18.167 4.00053C18.8067 5.17333 19.1249 6.77403 18.0297 7.53912C16.8279 8.37875 15.177 7.81016 14.5834 5.83333C13.75 8.60833 10.8333 8.60833 9.99999 5.83333Z" stroke="currentColor" strokeWidth="1.42" strokeLinejoin="round"/>
+        <path d="M1.66675 18.75H2.84322H8.33341" stroke="currentColor" strokeWidth="1.42" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M3.33325 7.9165V18.7498" stroke="currentColor" strokeWidth="1.42" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12.0833 15H17.9166" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M15 12.0835V17.9168" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M11.6666 10.8335H5.83325V14.1668H9.30547" stroke="currentColor" strokeWidth="1.42" strokeLinecap="round" strokeLinejoin="round"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_add_list">
+          <rect width="20" height="20" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  );
 }
